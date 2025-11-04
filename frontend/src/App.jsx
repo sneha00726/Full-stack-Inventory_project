@@ -23,6 +23,7 @@ import UserManage from "./pages/userManage.jsx";
 import Dashboard from "./pages/dashborad/DashBorad.jsx";
 import PurchaseManagement from "./pages/purchase/PurchaseManagement.jsx";
 import AddPurchase from "./pages/purchase/AddPurchase.jsx";
+import DashboardPage from "./pages/dashboardpage.jsx";
 
 export default class App extends React.Component
 {
@@ -59,7 +60,7 @@ export default class App extends React.Component
       <Route path="user" element={<UserManage/>}/>
 
       {/*  Default dashboard content */}
-      <Route index element={<h2>Welcome to Dashboard </h2>}/>
+      <Route index element={<DashboardPage />} />
       </Route>
 
     {/* Static sections */}

@@ -1,22 +1,57 @@
 import axios from "axios";
 
-const API_BASE = "http://localhost:3000/api/dashboard";
+// Helper to get JWT token from localStorage
+const getToken = () => localStorage.getItem("token");
 
-export const getDashboardData = async () => {
-  const [totalProducts, totalCategories, productsPerCategory, salesThisMonth, monthlySales] =
-    await Promise.all([
-      axios.get(`${API_BASE}/total-products`),
-      axios.get(`${API_BASE}/total-categories`),
-      axios.get(`${API_BASE}/products-per-category`),
-      axios.get(`${API_BASE}/sales-this-month`),
-      axios.get(`${API_BASE}/monthly-sales`),
-    ]);
+class DashboardService {
+  // Headers with token
+  getAuthHeaders() {
+    return { headers: { Authorization: `Bearer ${getToken()}` } };
+  }
 
-  return {
-    totalProducts: totalProducts.data.totalProducts,
-    totalCategories: totalCategories.data.totalCategories,
-    productsPerCategory: productsPerCategory.data,
-    salesThisMonth: salesThisMonth.data.totalSales || 0,
-    monthlySales: monthlySales.data || [],
-  };
-};
+  //  Total products
+  getTotalProducts() {
+    return axios.get(
+      "http://localhost:3000/api/dashboard/product",
+      this.getAuthHeaders()
+    );
+  }
+  
+   getTotalSales() {
+    return axios.get(
+      "http://localhost:3000/api/dashboard/totalsales",
+      this.getAuthHeaders()
+    );
+  }
+  //  Products per category
+  getCategoryWiseCount() {
+    return axios.get(
+      "http://localhost:3000/api/dashboard/category",
+      this.getAuthHeaders()
+    );
+  }
+
+  // 3 Sales per product
+  getSalesPerProduct() {
+    return axios.get(
+      "http://localhost:3000/api/dashboard/salesperprod",
+      this.getAuthHeaders()
+    );
+  }
+  //weekly sales
+  getWeeklySales() {
+  return axios.get(
+    "http://localhost:3000/api/dashboard/getWeeklySales",
+    this.getAuthHeaders()
+  );
+}
+ getLowStockProducts() {
+  return axios.get(
+    "http://localhost:3000/api/dashboard/lowstock",
+    this.getAuthHeaders()
+  );
+}
+
+}
+
+export default new DashboardService();

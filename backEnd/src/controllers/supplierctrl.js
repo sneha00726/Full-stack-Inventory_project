@@ -1,3 +1,4 @@
+
 const smodel = require("../models/suppliermodel.js");
 const { validateSupplier } = require("../validation/suppliervalidation.js");
 
@@ -13,7 +14,7 @@ exports.addSupplier = async (req, res) => {
     const result = await smodel.addSupplier(name, email, phone, companyname, address, gstnumber);
     return res.status(201).json({ success: true, message: "Supplier saved successfully", result });
   } catch (err) {
-    return res.status(500).json({ success: false, message: "Supplier not saved", error: err.message });
+    return res.status(500).json({ success: false, message: "There must some error / duplicate data ", error: err.message });
   }
 };
 

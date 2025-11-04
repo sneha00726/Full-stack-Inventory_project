@@ -14,8 +14,8 @@ export default class AddCustomer extends React.Component {
       phone_no: "",
       company_name: "",
       address: "",
-      gstNumber: "",
-      errors: {}, // <-- field-specific errors
+     
+      errors: {}, //  field-specific errors
       customers: [],
       currentPage: 1,
       customersPerPage: 10,
@@ -49,11 +49,11 @@ export default class AddCustomer extends React.Component {
       .catch(() => this.setState({ customers: [] }));
   };
 sendCustomerToServer = () => {
-  const { id, name, email, phone_no, company_name, address, gstNumber } = this.state;
+  const { id, name, email, phone_no, company_name, address } = this.state;
 
   this.setState({ errors: {} });
 
-  const customerData = { name, email, phone_no, company_name, address, gstNumber };
+  const customerData = { name, email, phone_no, company_name, address };
 
   const handleError = (err) => {
     const errorData = err.response?.data;
@@ -63,9 +63,8 @@ sendCustomerToServer = () => {
         if (msg.toLowerCase().includes("name")) errorsObj.name = msg;
         else if (msg.toLowerCase().includes("email")) errorsObj.email = msg;
         else if (msg.toLowerCase().includes("phone")) errorsObj.phone_no = msg;
-        else if (msg.toLowerCase().includes("company")) errorsObj.company_name = msg;
-        else if (msg.toLowerCase().includes("address")) errorsObj.address = msg;
-        else if (msg.toLowerCase().includes("gst")) errorsObj.gstNumber = msg;
+        
+        
         else errorsObj.general = msg;
       });
       this.setState({ errors: errorsObj });
@@ -78,7 +77,17 @@ sendCustomerToServer = () => {
     // Update
     CustService.updateCustomer(id, customerData)
       .then(() => {
-        this.setState({ showForm: false, id: "", errors: {} });
+        this.setState({
+        showForm: false,
+        id: "",
+        name: "",
+        email: "",
+        phone_no: "",
+        company_name: "",
+        address: "",
+       
+        errors: {}
+      });
         this.loadCustomers();
         window.alert(" Customer updated successfully!");
       })
@@ -87,7 +96,17 @@ sendCustomerToServer = () => {
     // Add
     CustService.saveCustomer(customerData)
       .then(() => {
-        this.setState({ showForm: false, errors: {} });
+         this.setState({
+        showForm: false,
+        id: "",
+        name: "",
+        email: "",
+        phone_no: "",
+        company_name: "",
+        address: "",
+        
+        errors: {}
+      });
         this.loadCustomers();
         window.alert("Customer added successfully!");
       })
@@ -100,7 +119,7 @@ sendCustomerToServer = () => {
 
   render() {
     const {
-      id, name, email, phone_no, company_name, address, gstNumber, errors,
+      id, name, email, phone_no, company_name, address, errors,
       customers, currentPage, customersPerPage, showForm, search
     } = this.state;
 
@@ -142,7 +161,7 @@ sendCustomerToServer = () => {
                 className="form-control"
                 onChange={(e) => this.setState({ name: e.target.value })}
               />
-              {errors.name && <div className="text-danger">{errors.name}</div>}
+              
             </div>
 
             {/* Email */}
@@ -171,48 +190,23 @@ sendCustomerToServer = () => {
 
             {/* Company Name */}
             <div className="form-group m-2">
-              <input
-                type="text"
-                value={company_name}
-                placeholder="Enter company name"
-                className="form-control"
-                onChange={(e) => this.setState({ company_name: e.target.value })}
-              />
-              {errors.company_name && <div className="text-danger">{errors.company_name}</div>}
+              <input  type="text"  value={company_name}  placeholder="Enter company name"  className="form-control"  onChange={(e) => this.setState({ company_name: e.target.value })}   />
+             {errors.name && <div className="text-danger">{errors.name}</div>}
             </div>
 
             {/* Address */}
             <div className="form-group m-2">
-              <input
-                type="text"
-                value={address}
-                placeholder="Enter address"
-                className="form-control"
-                onChange={(e) => this.setState({ address: e.target.value })}
-              />
-              {errors.address && <div className="text-danger">{errors.address}</div>}
+              <input  type="text" value={address}  placeholder="Enter address"  className="form-control"  onChange={(e) => this.setState({ address: e.target.value })} />
+               {errors.general && <div className="text-danger m-2">{errors.general}</div>}
             </div>
 
-            {/* GST Number */}
-            <div className="form-group m-2">
-              <input
-                type="text"
-                value={gstNumber}
-                placeholder="Enter GST number"
-                className="form-control"
-                onChange={(e) => this.setState({ gstNumber: e.target.value })}
-              />
-              {errors.gstNumber && <div className="text-danger">{errors.gstNumber}</div>}
-            </div>
+           
 
             {/* General errors */}
-            {errors.general && <div className="text-danger m-2">{errors.general}</div>}
+          
 
             <div className="form-group m-2">
-              <button
-                className="btn btn-success w-100"
-                onClick={this.sendCustomerToServer}
-              >
+              <button  className="btn btn-success w-100"   onClick={this.sendCustomerToServer}   >
                 {id ? "Update Customer" : "Save Customer"}
               </button>
             </div>
@@ -224,26 +218,26 @@ sendCustomerToServer = () => {
         <table className="table table-hover table-striped align-middle text-center">
           <thead className="table-dark">
             <tr>
-              <th>ID</th>
+              <th>SRNO</th>
               <th>Name</th>
               <th>Email</th>
               <th>Phone</th>
               <th>Company</th>
               <th>Address</th>
-              <th>GST</th>
+              
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {currentCustomers.length > 0 ? currentCustomers.map((cust) => (
+            {currentCustomers.length > 0 ? currentCustomers.map((cust,index) => (
               <tr key={cust.id}>
-                <td>{cust.id}</td>
+                <td>{index+1}</td>
                 <td>{cust.name}</td>
                 <td>{cust.email}</td>
                 <td>{cust.phone_no}</td>
                 <td>{cust.company_name}</td>
                 <td>{cust.address}</td>
-                <td>{cust.gstNumber}</td>
+               
                 <td>
                   <button
                     className="btn btn-sm btn-warning me-2"

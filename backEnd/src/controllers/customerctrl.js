@@ -3,15 +3,15 @@ let { validateCustomer } = require("../validation/customervalidation.js");
 // Add a new customer
 exports.AddCustomer=(req,res)=>
 {
-    let {name,email,phone_no,company_name,address,gstNumber} = req.body;
-     const errors = validateCustomer(name, email, phone_no, company_name, address, gstNumber);
+    let {name,email,phone_no,company_name,address} = req.body;
+     const errors = validateCustomer(name, email, phone_no, company_name, address);
     if (errors.length > 0) {
         return res.status(400).json({ message: "Validation failed", errors });
     }
-    if (!name || !email || !phone_no || !company_name || !address || !gstNumber) {
+    if (!name || !email || !phone_no || !company_name || !address ) {
         return res.status(400).send("All fields are required");
     }
-        let promise=model_cust.saveCustomer(name, email, phone_no, company_name,address,gstNumber);
+        let promise=model_cust.saveCustomer(name, email, phone_no, company_name,address);
     
         promise.then((result)=>
         {
@@ -21,7 +21,7 @@ exports.AddCustomer=(req,res)=>
         }).catch((err)=>
         {
             
-            res.status(500).json({ message: "Customer not save with same email ", error: err });
+            res.status(500).json({ message: "There must be Duplicate data  ", error: err });
         });
 }
 // View all customers
@@ -64,9 +64,9 @@ exports.viewAllCustomer=(req,res)=>{
     // Update customer by ID
 exports.UpdateCustomer = (req, res) => {
     let id = req.params.id;
-    let { name, email, phone_no, company_name, address, gstNumber } = req.body;
+    let { name, email, phone_no, company_name, address } = req.body;
 
-    let promise = model_cust.UpdateByid(id, name, email, phone_no, company_name, address, gstNumber);
+    let promise = model_cust.UpdateByid(id, name, email, phone_no, company_name, address);
 
     promise.then((result) => {
         if (result.affectedRows === 0) {

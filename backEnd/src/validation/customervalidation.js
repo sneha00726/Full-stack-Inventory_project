@@ -33,10 +33,6 @@ exports.validateCustomer = (name, email, phone_no, company_name, address, gstNum
         errors.push("Address is required and must be a string.");
     }
 
-    // GST number
-    if (!gstNumber || typeof gstNumber !== 'string' || gstNumber.length !== 15) {
-        errors.push("GST number is required and must be a 15-character string.");
-    }
 
     return errors;
 };

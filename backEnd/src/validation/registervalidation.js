@@ -1,12 +1,31 @@
-
 exports.validateEmail = function(email) {
-    // Simple regex for email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
+    let errors = [];
 
-//At least 6 characters
+    if (!email || typeof email !== 'string' || email.trim() === '') {
+        errors.push("Email is required.");
+    } else if (
+        !email.includes('@') ||
+        !email.includes('.') ||
+        email.startsWith('@') ||
+        email.endsWith('@') ||
+        email.endsWith('.')
+    ) {
+        errors.push("Email format is invalid.");
+    }
+
+    return {
+        valid: errors.length === 0,
+        errors
+    };
+};
 
 exports.validatePassword = function(password) {
-    return typeof password === 'string' && password.length >= 6;
-}
+    let errors = [];
+    if (!password || password.length < 6) {
+        errors.push("Password must be at least 6 characters long.");
+    }
+    return {
+        valid: errors.length === 0,
+        errors
+    };
+};

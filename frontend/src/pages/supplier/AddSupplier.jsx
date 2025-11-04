@@ -102,9 +102,10 @@ export default class AddSupplier extends React.Component {
 
     action
       .then((res) => {
+        if (!sid) alert("Supplier added successfully!");
         const msg = sid
-          ? ["✅ Supplier updated successfully"]
-          : [res.data.message || "✅ Supplier added successfully"];
+          ? ["Supplier updated successfully"]
+          : [res.data.message || "Supplier added successfully"];
 
         this.setState({
           msg,
@@ -281,9 +282,9 @@ export default class AddSupplier extends React.Component {
           </thead>
           <tbody>
             {currentSuppliers.length > 0 ? (
-              currentSuppliers.map((sup) => (
+              currentSuppliers.map((sup, index) => (
                 <tr key={sup.sid}>
-                  <td>{sup.sid}</td>
+                  <td>{indexOfFirst + index + 1}</td>
                   <td>{sup.name}</td>
                   <td>{sup.email}</td>
                   <td>{sup.phone}</td>

@@ -12,18 +12,18 @@ exports.HomeLoginPage=(req,res)=>
 exports.RegisterApi=(req,res)=>
 
 {
-     console.log("Received body:", req.body);
+     //console.log("Received body:", req.body);
     let {name,email,password,role}=req.body;
-    let hashedpass=bcrypt.hashSync(password,8);
+            let hashedpass=bcrypt.hashSync(password,8);
+        let emailCheck = validateEmail(email);
+        if (!emailCheck.valid) {
+            return res.status(400).json({ message: emailCheck.errors[0] });
+        }
 
-    if (!validateEmail(email)) {
-        return res.status(400).json({ message: "Invalid email format" });
-    }
-    if (!validatePassword(password)) {
-        return res.status(400).json({
-            message: "Password must be at least 6 characters long"
-        });
-    }
+        let passCheck = validatePassword(password);
+        if (!passCheck.valid) {
+            return res.status(400).json({ message: passCheck.errors[0] });
+        }
     let promsie=model_in.FindByEmail(email);
     promsie.then((result)=>
     {
@@ -37,12 +37,12 @@ exports.RegisterApi=(req,res)=>
                 res.status(201).json({message:`User registered with username ${name}`});
             }).catch((err)=>
             {
-                res.send("error"+err);
+               res.status(500).json({ message: "Database error", error: err.message });
             });
         }
     }).catch((err)=>
     {
-        res.status(500).json({ message: "Database error"});
+      res.status(500).json({ message: "Database error", error: err.message });
     });
 }
 
@@ -81,6 +81,6 @@ exports.LoginPage=(req,res)=>
 
     }).catch((err)=>
     {
-        res.send(err);
+        res.status(500).json({ message: "Database error", error: err.message });
     });
 }

@@ -2,11 +2,11 @@
 let db=require("../../db.js");
 
 // add customer data
-exports.saveCustomer = (name, email, phone_no, company_name, address, gstNumber) => {
+exports.saveCustomer = (name, email, phone_no, company_name, address) => {
     return new Promise((resolve, reject) => {
 
         //  Check if email or GST already exists
-       db.query("SELECT id FROM customer WHERE email = ? OR gstNumber = ?", [email, gstNumber], (checkErr, results) => {
+       db.query("SELECT id FROM customer WHERE email = ? ", [email], (checkErr, results) => {
             if (checkErr) {
                 return reject(checkErr); // Return error if duplicate check query fails
             }
@@ -16,7 +16,7 @@ exports.saveCustomer = (name, email, phone_no, company_name, address, gstNumber)
             }
 
             // Insert only if no duplicate
-            db.query("INSERT INTO customer (name, email, phone_no, company_name, address, gstNumber) VALUES (?, ?, ?, ?, ?, ?)", [name, email, phone_no, company_name, address, gstNumber], (err, result) => {
+            db.query("INSERT INTO customer (name, email, phone_no, company_name, address) VALUES (?, ?, ?, ?, ?)", [name, email, phone_no, company_name, address], (err, result) => {
                 if (err) {
                     return reject(err); // Return error if query fails
                 }
@@ -63,11 +63,11 @@ exports.getCustomerById=(id)=>
     });
 }
 // Update customer data by ID
-exports.UpdateByid=(id,name,email,phone_no,company_name,address,gstNumber)=>
+exports.UpdateByid=(id,name,email,phone_no,company_name,address)=>
 {
     return new Promise((resolve,reject)=>
     {
-        db.query("update customer set name=? ,email=?,phone_no=?,company_name=?,address=?,gstNumber=? where id=?",[name,email,phone_no,company_name,address,gstNumber,id],(err,result)=>
+        db.query("update customer set name=? ,email=?,phone_no=?,company_name=?,address=? where id=?",[name,email,phone_no,company_name,address,id],(err,result)=>
     {
         if(err)
         {
