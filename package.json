@@ -1,0 +1,7 @@
+{
+  "name": "Inventoryproject",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "cd backEnd && npm install && npm start"
+  }
+}
