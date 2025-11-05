@@ -1,14 +1,20 @@
 {
   "name": "mainproject",
   "version": "1.0.0",
+  "description": "Student Performance Predictor backend using Node.js, Express, and MySQL",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "nodejs",
+    "express",
+    "mysql",
+    "backend",
+    "student-performance"
+  ],
+  "author": "Sneha Mhasalkar",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "@fontsource/roboto": "^5.2.6",
     "bcrypt": "^6.0.0",
